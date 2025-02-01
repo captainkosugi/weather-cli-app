@@ -7,9 +7,10 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Weather weather = new Weather();
         Coordinates coordinates = new Coordinates();
-        String location = coordinates.getLocationInfo("Moscow, Russia");
+        String location = coordinates.getLocationInfo("Berlin, Germany");
         Map<String, Float> info = coordinates.getCoordinates(location);
         String w = weather.getWeatherInfo(info);
-        System.out.println(w);
+        Map<String, Float> forecats = weather.getWeatherForecast(w);
+        System.out.println(forecats);
     }
 }
