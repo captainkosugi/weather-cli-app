@@ -11,6 +11,6 @@ public class Main {
         Map<String, Float> info = coordinates.getCoordinates(location);
         String w = weather.getWeatherInfo(info);
         Map<String, Float> forecats = weather.getWeatherForecast(w);
-        System.out.println(forecats);
+        Printer.showResult(forecats);
     }
 }
