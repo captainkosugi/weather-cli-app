@@ -1,12 +1,10 @@
-package weather;
+package weather.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import weather.api.ApiClient;
+import weather.dto.CoordinatesDTO;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,8 +14,6 @@ import java.util.ResourceBundle;
 
 public class Coordinates {
 
-   private float latitude;
-   private float longitude;
    private final ResourceBundle bundle = ResourceBundle.getBundle("application");
    private final String GEOCODER_URL = bundle.getString("url.geocoder");
    private final ApiClient client;
@@ -38,38 +34,14 @@ public class Coordinates {
        return client.get(url);
    }
 
-   public Map<String, Float> getCoordinates(String locationInfo) throws JsonProcessingException {
-       Map<String, Float> location = new HashMap<>();
+   public CoordinatesDTO getCoordinates(String locationInfo) throws JsonProcessingException {
        JsonNode node = mapper.readTree(locationInfo);
-       String coordinates = node.get("response")
-               .get("GeoObjectCollection")
-               .get("featureMember")
-               .get(0)
-               .get("GeoObject")
-               .get("Point")
-               .get("pos").asText();
+       JsonNode pointNode = node.at
+               ("response/GeoObjectCollection/featureMember0/GeoObject/Point/pos");
 
-       setLatitude(Float.parseFloat(coordinates.split(" ")[0]));
-       setLongitude(Float.parseFloat(coordinates.split(" ")[1]));
-
-       location.put("latitude", getLatitude());
-       location.put("longitude", getLongitude());
-       return location;
+       String[] coordinates = pointNode.asText().split(" ");
+       return new CoordinatesDTO(Float.parseFloat(coordinates[0]),
+               Float.parseFloat(coordinates[1]));
    }
 
-    public float getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(float latitude) {
-        this.latitude = latitude;
-    }
-
-    public float getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(float longitude) {
-        this.longitude = longitude;
-    }
 }
