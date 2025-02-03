@@ -7,8 +7,6 @@ import weather.api.ApiClient;
 import weather.dto.CoordinatesDTO;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 
@@ -37,7 +35,7 @@ public class Coordinates {
    public CoordinatesDTO getCoordinates(String locationInfo) throws JsonProcessingException {
        JsonNode node = mapper.readTree(locationInfo);
        JsonNode pointNode = node.at
-               ("response/GeoObjectCollection/featureMember0/GeoObject/Point/pos");
+               ("/response/GeoObjectCollection/featureMember/0/GeoObject/Point/pos");
 
        String[] coordinates = pointNode.asText().split(" ");
        return new CoordinatesDTO(Float.parseFloat(coordinates[0]),
