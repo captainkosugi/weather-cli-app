@@ -1,14 +1,16 @@
-package weather;
+package weather.util;
 
-import java.util.Map;
+import weather.dto.WeatherDTO;
+
 
 public class Printer {
 
-    public static void showResult(Map<String, Float> forecast) {
+    public static void showResult(WeatherDTO forecast) {
         System.out.println(
-                "current: " + forecast.get("currentWeather") + "\n" +
-                "feels like: " + forecast.get("feelsLikeWeather") +"\n" +
-                "wind speed: " + forecast.get("windSpeed")
+                "\n" +
+                "current: " + forecast.getTemperature() + "\n" +
+                "feels like: " + forecast.getFeelsLike() +"\n" +
+                "wind speed: " + forecast.getWindSpeed()
         );
     }
 
