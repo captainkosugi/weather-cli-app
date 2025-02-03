@@ -10,7 +10,7 @@ public class ApiClient {
 
    private final OkHttpClient client;
 
-    public ApiClient(OkHttpClient client) {
+    public ApiClient() {
         this.client = new OkHttpClient();
     }
 
