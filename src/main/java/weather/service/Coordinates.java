@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import weather.api.ApiClient;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,21 +20,22 @@ public class Coordinates {
    private float longitude;
    private final ResourceBundle bundle = ResourceBundle.getBundle("application");
    private final String GEOCODER_URL = bundle.getString("url.geocoder");
-   private final OkHttpClient client = new OkHttpClient();
-   private final ObjectMapper mapper = new ObjectMapper();
+   private final ApiClient client;
+   private final ObjectMapper mapper;
 
 
-   public String getLocationInfo(String address) throws IOException {
-       Request request = new Request.Builder()
-               .url(GEOCODER_URL
+    public Coordinates(ApiClient client, ObjectMapper mapper) {
+        this.client = client;
+        this.mapper = mapper;
+    }
+
+    public String getLocationInfo(String address) throws IOException {
+       String url = GEOCODER_URL
                + "?apikey=" + bundle.getString("api.geocoder")
                + "&geocode=" + address
-               + "&format=json")
-               .build();
+               + "&format=json";
 
-       try (Response response = client.newCall(request).execute()){
-           return response.body().string();
-       }
+       return client.get(url);
    }
 
    public Map<String, Float> getCoordinates(String locationInfo) throws JsonProcessingException {
